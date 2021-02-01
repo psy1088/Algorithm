@@ -68,76 +68,69 @@
 #     else: pass
 
 ##2
-# row = int(start[1])
-# col = ord(start[0]) - ord('a') + 1
+# now = input()
+# x, y = int(now[1]), ord(now[0])
+# total_cnt = 0
+# num_a, num_h = ord('a'), ord('h')
+# steps = [(-2, -1), (-2, 1), (2, -1), (2, 1), (-1, -2), (-1, 2), (1, -2), (1, 2)]
 #
-# move = [(-2, -1), (-2, 1), (2, -1), (2, 1), (-1, -2), (1, -2), (-1, 2), (1, 2)]
-# cnt = 0
+# for i in steps:
+#     next_x = x + i[0]
+#     next_y = y + i[1]
 #
-# for i in move:
-#     next_row = row + i[0]
-#     next_col = col + i[1]
+#     if 1 <= next_x <= 8 and num_a <= next_y <= num_h:
+#         total_cnt += 1
 #
-#     if 1 <= next_row <= 8 and 1 <= next_col <= 8:
-#         cnt += 1
-# print(cnt)
+# print(total_cnt)
 
 
-# # p118 게임 개발
+# p118 게임 개발
+
 # N, M = map(int, input().split())
-# cur_row, cur_col, direction = map(int, input().split())
-# visited = [[0] * M for _ in range(N)] # 방문 여부
-# visited[cur_row][cur_col] = 1
-# d_row = [-1, 0, 1, 0]
-# d_col = [0, 1, 0, -1]
-# array = [] # 맵
-# move_cnt = 1 # 이동횟수
-# turn_cnt = 0 # 회전횟수
+# x, y, d = map(int, input().split())
+
+# game_map = []
 # for i in range(N):
-#     array.append(list(map(int, input().split())))
-#
-#
-# def turnLeft():
-#     global direction
-#     direction = (direction - 1 + 4) % 4
-#
-# while True:
-#     turnLeft()
-#     next_row = cur_row + d_row[direction]
-#     next_col = cur_col + d_col[direction]
-#
-#     # 육지에 해당하는 좌표이고 && 방문하지 않았다면
-#     if array[next_row][next_col] == 0 and visited[next_row][next_col] == 0:
-#         visited[next_row][next_col] = 1
-#         cur_row = next_row
-#         cur_col = next_col
-#         move_cnt += 1
-#         turn_cnt = 0
-#         continue
-#     else:
-#         turn_cnt += 1
-#
-#     # 제 자리에서 한바퀴 회전했다면
-#     if turn_cnt == 4:
-#         next_row = cur_row - d_row[direction]
-#         next_col = cur_col - d_col[direction]
-#
-#         # 1칸 후진 할 공간이 육지라면 이동
-#         if array[next_row][next_col] == 0:
-#             cur_row = next_row
-#             cur_col = next_col
-#         else:
-#             break
-#         turn_cnt = 0
-#
-# print(move_cnt)
+#     game_map.append(list(map(int, input().split())))
+
+N, M = 4, 4
+x, y, d = 1, 1, 0
+game_map = [[1, 1, 1, 1], [1, 0, 0, 1], [1, 1, 0, 1], [1, 1, 1, 1]]
+
+game_map[x][y] = 1
+cnt = 1
+
+dx = [-1, 0, 1, 0]
+dy = [0, 1, 0, -1]
+turn_cnt = 0
 
 
+def turn():
+    global d, turn_cnt
+    d = (d - 1 + 4) % 4  # 왼쪽방향으로 돌아
+    turn_cnt += 1
 
 
+while True:
+    turn()
+    next_x = x + dx[d]
+    next_y = y + dy[d]
 
+    if game_map[next_x][next_y] == 0:  # 이동가능한 공간이면~
+        x, y = next_x, next_y
+        game_map[x][y] = 1
+        cnt += 1
+        turn_cnt = 0
+        continue
 
+    if turn_cnt == 4:  # 이동불가능 한 공간인데, 4번 회전한 상태라면~
+        next_x = x - dx[d]
+        next_y = y - dy[d]
+        if game_map[next_x][next_y] == 0:  # 한 칸 후진
+            x, y = next_x, next_y
+            cnt += 1
+            turn_cnt = 0
+        else:  # 후진한 공간이 이동불가능 공간이면 종료
+            break
 
-
-
-
+print(cnt)
