@@ -1,58 +1,53 @@
-# p324 자물쇠와 열쇠
+## p324 자물쇠와 열쇠
 
-# 자물쇠의 (길이-1)*2 + 길이해가지고
-# 키를 하나씩 싹 대보면서 비교해봐 합이 only 1이되는지!! 2가 되면 안되지
+# 리스트 90도 회전
+def rotate(key):
+    len_key = len(key)
+    new_key = [[0] * len_key for _ in range(len_key)]
 
-arr_key = [[0, 0, 0], [1, 0, 0], [0, 1, 1]]
-arr_lock = [[1, 1, 1], [1, 1, 0], [1, 0, 1]]
-
-
-# 이차원 행렬 시계방향으로 90도 회전
-def rotation_matrix_90degree(x):
-    row = len(x)
-    col = len(x[0])
-    trans_arr = [[0] * row for _ in range(col)]
-
-    for i in range(row):
-        for j in range(col):
-            trans_arr[i][j] = x[row - 1 - j][i]
-    return trans_arr
+    for i in range(len_key):
+        for j in range(len_key):
+            new_key[i][j] = key[len_key - 1 - j][i]
+    return new_key
 
 
-# 자물쇠가 다 1인지 확인
-def check(new_lock):
-    lock_length = len(new_lock) // 3
-    for i in range(lock_length, lock_length * 2):
-        for j in range(lock_length, lock_length * 2):
-            if new_lock[i][j] != 1:
-                return False
-    return True
+# key와 lock이 맞아떨어지는지 체크
+def check(key, big_lock, lock_cnt, x, y):
+    len_key = len(key)
+    comp_cnt = 0
+    for row in range(len_key):
+        for col in range(len_key):
+            # key값이 1일떄 lock이 0이면 True
+            if key[row][col] == 1:
+                if big_lock[row + x][col + y] == 0:
+                    comp_cnt += 1
+                elif big_lock[row + x][col + y] == 1:
+                    return False
+
+    if comp_cnt == lock_cnt:
+        return True
 
 
 def solution(key, lock):
-    lock_length = len(lock)
-    key_length = len(key)
+    len_lock, len_key = len(lock), len(key)
+    len_big = len_lock + (len_key - 1) * 2
 
-    new_lock = [[0] * (lock_length * 3) for _ in range(lock_length * 3)]
+    # lock 리스트에서 0의 개수 구함
+    lock_cnt = 0
+    for i in range(len_lock):
+        lock_cnt += lock[i].count(0)
 
-    for i in range(lock_length):
-        for j in range(lock_length):
-            new_lock[i + lock_length][j + lock_length] = lock[i][j]
+    # Lock 크기를 (key의 크기-1)만큼늘려서 가운데 lock 넣음
+    big_lock = [[5] * len_big for _ in range(len_big)]
+    for i in range(len_lock):
+        for j in range(len_lock):
+            big_lock[i + len_key - 1][j + len_key - 1] = lock[i][j]
 
-    # 4가지 방향 회전하면서 확인하기
-    for i in range(4):
-        key = rotation_matrix_90degree(key)
-        for a in range(lock_length * 2):
-            for b in range(lock_length * 2):
-                for c in range(key_length):
-                    for d in range(key_length):
-                        new_lock[a + c][b + d] += key[c][d]
-                if check(new_lock):
+    # big_lock에 key를 0,0부터 차례대로 완전탐색
+    for _ in range(4):
+        for x in range(len_lock + len_key - 1):
+            for y in range(len_lock + len_key - 1):
+                if check(key, big_lock, lock_cnt, x, y):
                     return True
-                for c in range(key_length):
-                    for d in range(key_length):
-                        new_lock[a + c][b + d] -= key[c][d]
+        key = rotate(key)
     return False
-
-
-print(solution(arr_key, arr_lock))
