@@ -16,13 +16,13 @@ for i in range(N):
 ### 치킨 거리 최솟값 구하기
 choice = list(combinations(chicken, M))  # 치킨집 리스트 원소 중 M개를 뽑음
 
-min_total = 1e9  # 도시의 치킨 거리 최솟값
+min_total = (N + N) * len(home)  # 도시의 치킨 거리 최솟값
 total = 0  # 도시의 치킨 거리
 for cho in choice:
     total = 0
     for hr, hc in home:
         min_dis = N + N  # home에서 선택된 chicken까지의 최소거리
-        for i in range(len(cho)):
+        for i in range(M):
             r = abs(cho[i][0] - hr)  # 절댓값
             c = abs(cho[i][1] - hc)
             min_dis = min(min_dis, r + c)
