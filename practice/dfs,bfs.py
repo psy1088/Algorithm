@@ -59,43 +59,27 @@
 # print(cnt)
 
 
-# p152 미로탈출
+# # p152 미로탈출
 from collections import deque
 
-N, M = map(int, input().split())  # N=행의 수, M=열의 수
-
-graph = []
-for _ in range(N):
-    graph.append(list(map(int, input().split())))
-
-#    동  서  남  북
-dr = [0, 0, 1, -1]
-dc = [1, -1, 0, 0]
+N, M = 5, 6
+game_map = [[1, 0, 1, 0, 1, 0], [1, 1, 1, 1, 1, 1], [0, 0, 0, 0, 0, 1], [1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1]]
 
 
 def bfs(r, c):
-    q = deque()
     q.append((r, c))
-    dis = 1
-
     while q:
         r, c = q.popleft()
-        if (r, c) == (N - 1, M - 1):  # pop한 좌표가 도착점이라면 이 좌표의 값을 리턴
-            return graph[N - 1][M - 1]
-
-        for i in range(4):  # 동서남북 순으로 이동 가능한 길인지 확인
-            next_r = r + dr[i]
-            next_c = c + dc[i]
-            # 그래프의 범위를 초과했거나, 다음 이동할 좌표가 0 이면 건너뜀
-            if next_r <= -1 or N <= next_r or next_c <= -1 or M <= next_c or graph[next_r][next_c] == 0:
-                continue
-            elif graph[next_r][next_c] == 1:
-                # 이동가능한 길이면 q에 넣고, 1 증가시킨 값을 해당 좌표에 저장해줌(시작위치로부터의 거리를 나타냄)
-                q.append((next_r, next_c))
-                graph[next_r][next_c] = graph[r][c] + 1
+        for d in range(4): # 상하좌우 탐색해서 범위 안에 있고, 이동 가능한 경우 큐에 추가
+            n_r, n_c = r + dr[d], c + dc[d]
+            if 0 <= n_r < N and 0 <= n_c < M and game_map[n_r][n_c] == 1:
+                q.append((n_r, n_c))
+                game_map[n_r][n_c] = game_map[r][c] + 1
+                if n_r == N - 1 and n_c == M - 1:  # 도착지점이면 리턴
+                    return game_map[n_r][n_c]
 
 
+dr = [-1, 0, 1, 0]
+dc = [0, -1, 0, 1]
+q = deque()
 print(bfs(0, 0))
-
-
-
