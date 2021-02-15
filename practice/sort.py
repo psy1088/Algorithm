@@ -34,9 +34,9 @@ b = list(map(int, input().split()))
 a.sort()
 b.sort(reverse=True)
 for i in range(K):
-    if a[i] < b[i]:
+    if a[i] < b[i]:  # a의 최솟값이, b의 최댓값보다 작다면 교환
         a[i], b[i] = b[i], a[i]
-    else:
+    else:  # a의 최솟값이 b의 최댓값보다 크다면 더 이상 비교할 의미가 없음!
         break
 
 result = sum(a)
