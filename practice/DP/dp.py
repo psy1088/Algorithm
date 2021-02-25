@@ -42,19 +42,50 @@
 # print(d[x])
 
 
+# # p220 개미 전사
+# n = int(input())  # 식량창고 개수
+# k = list(map(int, input().split()))
+#
+# d = [0] * n
+#
+# d[0] = k[0]
+# d[1] = max(k[0], k[1])
+# for i in range(2, n):
+#     d[i] = max(d[i-2]+k[i], d[i-1])
+#
+# print(d[n-1])
 
-# p220 개미 전사
-n = int(input())  # 식량창고 개수
-k = list(map(int, input().split()))
 
-d = [0] * n
+# # p223 바닥 공사
+# n = int(input())
+#
+# d = [0] * n
+# d[0] = 1
+# d[1] = 3
+# for i in range(2, n):
+#     d[i] = (d[i-1] + d[i-2] * 2) % 796796
+#
+# print(d[n-1])
 
-d[0] = k[0]
-d[1] = max(k[0], k[1])
-for i in range(2, n):
-    d[i] = max(d[i-2]+k[i], d[i-1])
 
-print(d[n-1])
+# p226 효율적인 화폐구성
+n, m = 3, 4  # n=화폐개수, m=만들 돈의 합
+coin = [3, 5, 7]
+
+d = [10001] * (m+1)
+
+d[0] = 0
+for i in range(n):
+    for j in range(coin[i], m+1):
+        if d[j-coin[i]] != 10001:
+            d[j] = min(d[j], d[j - coin[i]] + 1)
+
+if d[m] == 10001:
+    print(-1)
+else:
+    print(d[m])
+
+
 
 
 
