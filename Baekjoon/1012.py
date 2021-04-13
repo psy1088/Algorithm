@@ -34,5 +34,4 @@ for _ in range(T):
             if data[i][j] == 1:
                 cnt += 1
                 bfs(i, j)
-
     print(cnt)
