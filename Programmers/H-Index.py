@@ -1,11 +1,10 @@
-def solution(array):
-    array.sort(reverse=True)
-    for start in range(array[0], -1, -1):
-        cnt = 0
-        for i in range(len(array)):
-            if start <= array[i]:
-                cnt += 1
-            else:
-                break
-        if start <= cnt:
-            return start
+from bisect import bisect_left
+
+def solution(citations):
+    arr = sorted(citations)
+    len_arr = len(arr)
+    
+    for i in range(len(arr), -1, -1):
+        large_cnt = len_arr - bisect_left(arr, i) # i보다 큰 수의 개수
+        if i <= large_cnt:
+            return i
