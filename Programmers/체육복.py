@@ -1,5 +1,3 @@
-# 체육복
-
 # 1번 풀이
 def solution(n, lost, reserve):
     for l in lost:
