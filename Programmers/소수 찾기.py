@@ -1,4 +1,3 @@
-# 소수 찾기
 from itertools import permutations
 import math
 
