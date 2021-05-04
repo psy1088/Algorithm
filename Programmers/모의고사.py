@@ -1,4 +1,3 @@
-# 모의고사
 def solution(answers):
     arr1 = [1, 2, 3, 4, 5]
     arr2 = [2, 1, 2, 3, 2, 4, 2, 5]
