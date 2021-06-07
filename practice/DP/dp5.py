@@ -19,26 +19,23 @@ n = int(input())
 # print(index)
 
 # 2번 풀이
-ugly = [0] * n
-ugly[0] = 1
+dp = [0] * (n+1)
+dp[1] = 1
 
-i2 = i3 = i5 = 0
 next2, next3, next5 = 2, 3, 5
 
-for i in range(1, n):  # 못생긴 수의 *2, *3, *5 또한 못생긴 수라는 점을 이용한 dp 풀이
-    ugly[i] = min(next2, next3, next5)
+for i in range(2, n+1):
+    dp[i] = min(next2, next3, next5)
 
-    if ugly[i] == next2:
-        i2 += 1
-        next2 = ugly[i2] * 2
-    if ugly[i] == next3:
-        i3 += 1
-        next3 = ugly[i3] * 3
-    if ugly[i] == next5:
-        i5 += 1
-        next5 = ugly[i5] * 5
+    if dp[i] == next2:
+        next2 += 2
+    if dp[i] == next3:
+        next3 += 3
+    if dp[i] == next5:
+        next5 += 5
 
-print(ugly)
+print(dp[n])
+
 
 
 
